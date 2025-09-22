@@ -22,4 +22,8 @@ export const routes: Routes = [
     path: 'folder/:id',
     loadComponent: () => import('./folder/folder.page').then((m) => m.FolderPage),
   },
+  {
+    path: 'panel-operador',
+    loadComponent: () => import('./panel-operador/panel-operador.page').then((m) => m.PanelOperadorPage),
+  },
 ];

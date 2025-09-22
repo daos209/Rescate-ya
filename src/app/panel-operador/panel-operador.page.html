@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-title>Panel de Emergencias</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let alerta of alertas">
+    <ion-card-header>
+      <ion-card-title>Alerta #{{alerta.id}}</ion-card-title>
+      <ion-card-subtitle>{{alerta.fecha | date:'short'}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Usuario:</strong> {{alerta.usuario}}</p>
+      <p><strong>Ubicación:</strong> {{alerta.ubicacion}}</p>
+      <p><strong>Descripción:</strong> {{alerta.descripcion}}</p>
+      <ion-button color="success" size="small" (click)="marcarAtendida(alerta)" [disabled]="alerta.estado==='Atendida'">
+        Marcar como atendida
+      </ion-button>
+      <ion-badge color="warning" *ngIf="alerta.estado==='Pendiente'">Pendiente</ion-badge>
+      <ion-badge color="success" *ngIf="alerta.estado==='Atendida'">Atendida</ion-badge>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
