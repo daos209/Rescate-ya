@@ -7,10 +7,12 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="home-content">
   <div class="home-container">
-    <h2 class="title">Emergencia</h2>
-    <p class="subtitle">Presiona el botón si necesitas ayuda.</p>
+    <div class="home-header">
+      <h2 class="title">Emergencia</h2>
+      <p class="subtitle">Presiona el botón si necesitas ayuda.</p>
+    </div>
 
     <ion-button class="location-btn" expand="block" fill="outline" (click)="getLocation()">
       <ion-icon name="location" slot="start"></ion-icon>
@@ -28,4 +30,3 @@
     </ion-button>
   </div>
 </ion-content>
-

@@ -1,46 +1,81 @@
-ion-content {
-  --background: linear-gradient(180deg, #f5f7fa, #e6ebf0);
+.home-content {
+  --background: linear-gradient(180deg, #fff5f5, #fbeaea);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
 }
 
 .home-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 100%;
-  text-align: center;
   gap: 20px;
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
 }
 
-.title {
-  font-size: 1.8rem;
+.home-header .title {
+  font-size: 2rem;
   font-weight: bold;
   color: #d32f2f;
 }
 
-.subtitle {
+.home-header .subtitle {
   font-size: 1rem;
-  color: #333333;
+  color: #333;
+}
+
+.location-btn {
+  width: 90%;
+  max-width: 400px;
+  font-size: 1rem;
+  --border-radius: 50px;
+  --border-color: #d32f2f;
+  color: #d32f2f;
+  --background: #fff0f0;
+  transition: all 0.3s ease;
+
+  &:hover {
+    --background: #f9caca;
+    color: #fff;
+  }
 }
 
 .location-info {
   font-size: 1rem;
-  color: #000000; /* Changed to black for better visibility */
   font-weight: bold;
-  margin-bottom: 16px;
+  color: #000;
 }
 
 .emergency-btn {
+  width: 90%;
+  max-width: 400px;
   font-size: 1.4rem;
   font-weight: bold;
   height: 60px;
-  width: 90%;
-  max-width: 400px;
   --background: #d32f2f;
   --background-activated: #b71c1c;
   --border-radius: 50px;
   color: white;
   box-shadow: 0 6px 14px rgba(211, 47, 47, 0.4);
   letter-spacing: 1px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 18px rgba(211, 47, 47, 0.5);
+  }
+}
+
+@media (max-width: 480px) {
+  .home-header .title {
+    font-size: 1.7rem;
+  }
+
+  .emergency-btn, .location-btn {
+    font-size: 1.2rem;
+    height: 55px;
+  }
 }

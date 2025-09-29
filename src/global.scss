@@ -35,3 +35,49 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+/* Menú lateral */
+.menu-header {
+  --background: #d32f2f; /* rojo de emergencia */
+  --color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.menu-header ion-title {
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+/* Avatar/logo */
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+  border: 2px solid #fff;
+}
+
+/* Contenido del menú */
+.menu-content {
+  --background: #fff;
+}
+
+.menu-content ion-item {
+  --ion-item-background: transparent;
+  --ion-item-color: #333;
+  margin: 0 0.5rem;
+  border-radius: 8px;
+}
+
+.menu-content ion-item:hover {
+  --background: #f2f2f2;
+}
+
+.menu-content ion-icon {
+  font-size: 1.3rem;
+}
