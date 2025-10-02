@@ -4,15 +4,10 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Mi Perfil</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="toggleAccessibility()">
-        <ion-icon name="accessibility-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="profile-content" [class.high-contrast]="highContrastMode">
+<ion-content class="profile-content">
   <div class="profile-container">
 
     <div class="profile-header">
@@ -106,6 +101,11 @@
     <ion-button expand="block" color="medium" fill="outline" (click)="logout()">
       <ion-icon name="log-out-outline" slot="start"></ion-icon>
       Cerrar sesión
+    </ion-button>
+
+    <ion-button expand="block" color="danger" fill="outline" (click)="deleteAccount()">
+      <ion-icon name="trash-outline" slot="start"></ion-icon>
+      Eliminar Cuenta
     </ion-button>
 
   </div>

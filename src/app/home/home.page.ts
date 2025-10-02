@@ -1,36 +1,46 @@
 import { Component } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
+import { IonicModule, AlertController } from '@ionic/angular';
 import { GeolocationService } from '../services/geolocation.service';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
-  imports: [IonicModule, CommonModule],
   templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss']
+  styleUrls: ['./home.page.scss'],
+  standalone: true,
+  imports: [IonicModule, CommonModule]
 })
 export class HomePage {
-  currentLocation: string | null = null;
 
-  constructor(private geoService: GeolocationService) {}
+  constructor(
+    private geolocationService: GeolocationService,
+    private alertController: AlertController
+  ) {}
 
-  async getLocation() {
+  async sendSOS() {
     try {
-      const permission = await this.geoService.checkPermissions();
-      if (permission.location !== 'granted') {
-        await this.geoService.requestPermissions();
-      }
+      const position = await this.geolocationService.getCurrentPosition();
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
 
-      const position = await this.geoService.getCurrentPosition();
-      this.currentLocation = `Lat: ${position.coords.latitude.toFixed(5)}, Lon: ${position.coords.longitude.toFixed(5)}`;
-    } catch (err) {
-      console.error('Error obteniendo ubicación', err);
-      this.currentLocation = 'No se pudo obtener la ubicación';
+      console.log('Ubicación enviada al servidor:', lat, lng);
+
+      const alert = await this.alertController.create({
+        header: ' Ubicación enviada',
+        message: `Ubicación (${lat}, ${lng})`,
+        buttons: ['OK']
+      });
+      await alert.present();
+
+    } catch (error) {
+      console.error('Error al enviar ubicación:', error);
+
+      const alert = await this.alertController.create({
+        header: ' Error',
+        message: 'Erro al obterner ubicación.',
+        buttons: ['OK']
+      });
+      await alert.present();
     }
-  }
-
-  sendEmergency() {
-    alert('Se ha solicitado ayuda(demo)');
   }
 }

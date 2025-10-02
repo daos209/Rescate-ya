@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { SqliteDbService, User, EmergencyContact } from '../services/sqlite-db.service';
 
@@ -15,14 +15,17 @@ import { SqliteDbService, User, EmergencyContact } from '../services/sqlite-db.s
 export class ProfilePage implements OnInit {
   user: User = { name: '', email: '', password: '', phone: '', address: '', medicalData: '' };
   emergencyContacts: EmergencyContact[] = [];
-  highContrastMode = false;
   successMessage = '';
 
-  constructor(private dbService: SqliteDbService, private router: Router) {}
+  constructor(
+    private dbService: SqliteDbService,
+    private router: Router,
+    private alertController: AlertController
+  ) {}
 
-  async ngOnInit() { await this.loadUser(); }
-
-  toggleAccessibility() { this.highContrastMode = !this.highContrastMode; }
+  async ngOnInit() { 
+    await this.loadUser(); 
+  }
 
   async loadUser() {
     const userId = Number(localStorage.getItem('loggedUserId'));
@@ -45,7 +48,9 @@ export class ProfilePage implements OnInit {
     this.emergencyContacts.push({ id: undefined, userId, name: '', phone: '' });
   }
 
-  removeContact(index: number) { this.emergencyContacts.splice(index, 1); }
+  removeContact(index: number) { 
+    this.emergencyContacts.splice(index, 1); 
+  }
 
   async saveProfile() {
     try {
@@ -53,15 +58,45 @@ export class ProfilePage implements OnInit {
       if (!userId) return;
 
       await this.dbService.updateUser(userId, this.user);
-      await this.dbService.updateEmergencyContacts(userId, this.emergencyContacts.map(c => ({ name: c.name, phone: c.phone })));
+      await this.dbService.updateEmergencyContacts(
+        userId,
+        this.emergencyContacts.map(c => ({ name: c.name, phone: c.phone }))
+      );
 
       this.successMessage = 'Perfil guardado correctamente';
       setTimeout(() => this.successMessage = '', 3000);
-    } catch (err) { console.error('Error guardando perfil:', err); }
+    } catch (err) {
+      console.error('Error guardando perfil:', err);
+    }
   }
 
   logout() {
     localStorage.removeItem('loggedUserId');
     this.router.navigate(['/login']);
+  }
+
+  async deleteAccount() {
+    const confirm = await this.alertController.create({
+      header: 'Eliminar cuenta',
+      message: '¿Estás seguro que quieres eliminar tu cuenta? Esta acción no se puede deshacer.',
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Eliminar',
+          handler: async () => {
+            try {
+              const userId = Number(localStorage.getItem('loggedUserId'));
+              if (!userId) return;
+              await this.dbService.deleteUser(userId);
+              localStorage.removeItem('loggedUserId');
+              this.router.navigate(['/login']);
+            } catch (err) {
+              console.error('Error eliminando usuario:', err);
+            }
+          }
+        }
+      ]
+    });
+    await confirm.present();
   }
 }
