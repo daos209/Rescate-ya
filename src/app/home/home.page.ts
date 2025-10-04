@@ -1,100 +1,46 @@
 import { Component } from '@angular/core';
-import { IonicModule, ToastController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { IonicModule, AlertController } from '@ionic/angular';
 import { GeolocationService } from '../services/geolocation.service';
-
-interface EmergencyContact {
-  name: string;
-  phone: string;
-}
 
 @Component({
   selector: 'app-home',
-  standalone: true,
-  imports: [IonicModule, CommonModule, RouterModule],
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
+  standalone: true,
+  imports: [IonicModule, CommonModule]
 })
 export class HomePage {
-  currentLocation: string = '';
 
   constructor(
-    private toastCtrl: ToastController,
-    private geolocationService: GeolocationService
+    private geolocationService: GeolocationService,
+    private alertController: AlertController
   ) {}
 
-  
-  async sendEmergency() {
-    const storedContacts = localStorage.getItem('emergencyContacts');
-    let emergencyContacts: EmergencyContact[] = [];
-    if (storedContacts) {
-      emergencyContacts = JSON.parse(storedContacts);
-    }
-
-    if (emergencyContacts.length === 0) {
-      const toast = await this.toastCtrl.create({
-        message: 'No hay contactos de emergencia configurados.',
-        duration: 3000,
-        position: 'top',
-        color: 'danger',
-      });
-      await toast.present();
-      return;
-    }
-
+  async sendSOS() {
     try {
       const position = await this.geolocationService.getCurrentPosition();
-      const coords = position.coords;
-      this.currentLocation = `Lat: ${coords.latitude}, Lng: ${coords.longitude}`;
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
 
-      const message = `Necesito ayuda. Mi ubicación: ${this.currentLocation}`;
-      const contact = emergencyContacts[0]; // Send to first contact
-      const smsUrl = `sms:${contact.phone}?body=${encodeURIComponent(message)}`;
-      window.location.href = smsUrl;
+      console.log('Ubicación enviada al servidor:', lat, lng);
 
-      const toast = await this.toastCtrl.create({
-        message: `Mensaje de emergencia enviado a ${contact.name} (${contact.phone})`,
-        duration: 3000,
-        position: 'top',
-        cssClass: 'emergency-toast',
+      const alert = await this.alertController.create({
+        header: ' Ubicación enviada',
+        message: `Ubicación (${lat}, ${lng})`,
+        buttons: ['OK']
       });
+      await alert.present();
 
-      await toast.present();
     } catch (error) {
-      const toast = await this.toastCtrl.create({
-        message: 'Error obteniendo ubicación. Mensaje enviado sin ubicación.',
-        duration: 3000,
-        position: 'top',
-        color: 'warning',
+      console.error('Error al enviar ubicación:', error);
+
+      const alert = await this.alertController.create({
+        header: ' Error',
+        message: 'Erro al obterner ubicación.',
+        buttons: ['OK']
       });
-
-      await toast.present();
-    }
-  }
-
-  async getLocation() {
-    try {
-      const position = await this.geolocationService.getCurrentPosition();
-      const coords = position.coords;
-      this.currentLocation = `Lat: ${coords.latitude}, Lng: ${coords.longitude}`;
-
-      const toast = await this.toastCtrl.create({
-        message: `Ubicación actual: ${this.currentLocation}`,
-        duration: 2000,
-        position: 'bottom',
-      });
-
-      await toast.present();
-    } catch (error) {
-      const toast = await this.toastCtrl.create({
-        message: 'Error obteniendo ubicación',
-        duration: 2000,
-        position: 'bottom',
-        color: 'danger',
-      });
-
-      await toast.present();
+      await alert.present();
     }
   }
 }

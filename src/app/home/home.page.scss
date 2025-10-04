@@ -1,46 +1,33 @@
-ion-content {
-  --background: linear-gradient(180deg, #f5f7fa, #e6ebf0);
-  padding: 20px;
-}
-
-.home-container {
+.container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
   text-align: center;
-  gap: 20px;
+
+  h1 {
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
 }
 
-.title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #d32f2f;
-}
-
-.subtitle {
-  font-size: 1rem;
-  color: #333333;
-}
-
-.location-info {
-  font-size: 1rem;
-  color: #000000; /* Changed to black for better visibility */
-  font-weight: bold;
-  margin-bottom: 16px;
-}
-
-.emergency-btn {
-  font-size: 1.4rem;
-  font-weight: bold;
-  height: 60px;
-  width: 90%;
-  max-width: 400px;
-  --background: #d32f2f;
-  --background-activated: #b71c1c;
-  --border-radius: 50px;
+.sos-button {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: #e53935;
   color: white;
-  box-shadow: 0 6px 14px rgba(211, 47, 47, 0.4);
-  letter-spacing: 1px;
+  font-size: 2rem;
+  font-weight: bold;
+  border: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+
+  &:active {
+    transform: scale(0.95);
+    background-color: #c62828;
+  }
 }
